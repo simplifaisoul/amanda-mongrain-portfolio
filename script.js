@@ -137,14 +137,35 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Project card hover effects
+// Project card hover effects with enhanced animations
 projectCards.forEach(card => {
     card.addEventListener('mouseenter', function() {
         this.style.transform = 'translateY(-10px) scale(1.02)';
+        this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     });
     
     card.addEventListener('mouseleave', function() {
         this.style.transform = 'translateY(0) scale(1)';
+    });
+    
+    // Add click ripple effect
+    card.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
     });
 });
 
@@ -219,3 +240,86 @@ const optimizedScroll = debounce(() => {
 }, 10);
 
 window.addEventListener('scroll', optimizedScroll);
+
+// Enhanced animations for stats
+const statNumbers = document.querySelectorAll('.stat-number');
+statNumbers.forEach(stat => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const text = entry.target.textContent;
+                const number = parseInt(text.replace(/\D/g, ''));
+                if (!isNaN(number)) {
+                    animateNumber(entry.target, 0, number, text.includes('%') ? '%' : '+', 2000);
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    observer.observe(stat);
+});
+
+function animateNumber(element, start, end, suffix, duration) {
+    const startTime = performance.now();
+    const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(start + (end - start) * progress);
+        element.textContent = current + suffix;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            element.textContent = end + suffix;
+        }
+    };
+    requestAnimationFrame(animate);
+}
+
+// Add smooth reveal animations for all sections
+const allSections = document.querySelectorAll('section');
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+        }
+    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+});
+
+allSections.forEach(section => {
+    sectionObserver.observe(section);
+});
+
+// Enhanced button animations
+const buttons = document.querySelectorAll('.btn');
+buttons.forEach(button => {
+    button.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px)';
+    });
+    
+    button.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+    });
+});
+
+// Add floating animation to contact icons
+const contactIcons = document.querySelectorAll('.contact-icon');
+contactIcons.forEach((icon, index) => {
+    icon.style.animationDelay = `${index * 0.2}s`;
+});
+
+// Enhanced tag hover effects
+const tags = document.querySelectorAll('.tag');
+tags.forEach(tag => {
+    tag.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px) scale(1.05)';
+    });
+    
+    tag.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+    });
+});
