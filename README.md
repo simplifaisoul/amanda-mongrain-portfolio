@@ -12,7 +12,7 @@ A modern, high-quality portfolio website showcasing the work and achievements of
 
 ## Projects Featured
 
-1. **SimplifAI-1 IMC Plan** - A successful Integrated Marketing Communications plan that resulted in acquiring over 7 website clients for SimplifAI-1
+1. **SimplifAI-1 IMC Plan** - A successful Integrated Marketing Communications plan that resulted in acquiring over 14 website clients for SimplifAI-1
 2. **Project 2** - Coming soon
 3. **Project 3** - Coming soon
 
